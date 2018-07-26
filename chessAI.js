@@ -34,14 +34,72 @@ $(document).ready(function(){
 
 
 	var calculateBestMove = function() {
-	  var possibleMoves = game.moves();
+		var possibleMoves = game.moves();
 
-	  // game over
-	  if (possibleMoves.length === 0) return;
+		// game over
+		if (possibleMoves.length === 0) return;
 
-	  var randomIndex = Math.floor(Math.random() * possibleMoves.length);
-	  game.move(possibleMoves[randomIndex]);
-	  board.position(game.fen());
+		var bestMove = null;
+		//use any negative large number
+		var bestValue = -9999;
+
+		for (var i = 0; i < possibleMoves.length; i++) {
+		    var possibleMove = possibleMoves[i];
+		    game.move(possibleMove);
+
+		    var boardValue = -evaluateBoard(game.board())
+		    game.undo();
+		    if (boardValue > bestValue) {
+		        bestValue = boardValue;
+		        bestMove = possibleMove
+		    }
+		}
+
+		return bestMove;
+	};
+
+
+	// 
+	var evaluateBoard = function (board) {
+	    var totalEvaluation = 0;
+	    for (var i = 0; i < 8; i++) {
+	        for (var j = 0; j < 8; j++) {
+	            totalEvaluation = totalEvaluation + getPieceValue(board[i][j]);
+	        }
+	    }
+	    return totalEvaluation;
+	};
+
+
+	var getPieceValue = function (piece) {
+	    if (piece === null) {
+	        return 0;
+	    }
+	    var getAbsoluteValue = function (piece, isWhite) {
+	        if (piece.type === 'p') {
+	            return (isWhite ? 10 : -10);
+	        } else if (piece.type === 'r') {
+	            return (isWhite ? 50 : -50);
+	        } else if (piece.type === 'n') {
+	            return (isWhite ? 30 : -30);
+	        } else if (piece.type === 'b') {
+	            return (isWhite ? 30 : -30);
+	        } else if (piece.type === 'q') {
+	            return (isWhite ? 90 : -90);
+	        } else if (piece.type === 'k') {
+	            return (isWhite ? 900 : -900);
+	        }
+	        throw "Error: Unknown piece type given: " + piece.type;
+	    };
+
+	    return absoluteValue = getAbsoluteValue(piece, piece.color === 'w');
+	};
+
+
+	var makeAImove = function () {
+	    var bestMove = calculateBestMove(game);
+	    game.move(bestMove);
+	    board.position(game.fen());
 	};
 
 
@@ -59,7 +117,7 @@ $(document).ready(function(){
 	  if (move === null) return 'snapback';
 
 	  // make random legal move for black
-	  window.setTimeout(calculateBestMove, 250);
+	  window.setTimeout(makeAImove, 250);
 	};
 
 
