@@ -24,8 +24,7 @@ $(document).ready(function(){
 	// do not pick up pieces if the game is over
 	// only pick up pieces for White
 	var onDragStart = function(source, piece, position, orientation) {
-	  if (game.in_checkmate() === true || game.in_draw() === true || game.game_over() === true ||
-	    piece.search(/^b/) !== -1) {
+	  if (game.in_checkmate() === true || game.in_draw() === true || game.game_over() === true) {
 	  	$('#gameover').show();
 	  	$("#gameover").html('Game over!');
 	    return false;
