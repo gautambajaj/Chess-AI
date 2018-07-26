@@ -24,7 +24,7 @@ $(document).ready(function(){
 	// do not pick up pieces if the game is over
 	// only pick up pieces for White
 	var onDragStart = function(source, piece, position, orientation) {
-	  if (game.in_checkmate() === true || game.in_draw() === true || game.game_over() === true) {
+	  if (game.in_checkmate() === true || game.in_draw() === true || game.game_over() === true ) {
 	  	$('#gameover').show();
 	  	$("#gameover").html('Game over!');
 	    return false;
@@ -32,33 +32,56 @@ $(document).ready(function(){
 	};
 
 
+	// uses the minimax algorithm with alpha beta pruning to caculate the best move
 	var calculateBestMove = function() {
-		var possibleMoves = game.moves();
 
-		// game over
-		if (possibleMoves.length === 0) return;
+	    var newGameMoves = game.moves();
+	    var bestMove = -9999;
+	    var bestMoveFound;
 
-		var bestMove = null;
-		//use any negative large number
-		var bestValue = -9999;
-
-		for (var i = 0; i < possibleMoves.length; i++) {
-		    var possibleMove = possibleMoves[i];
-		    game.move(possibleMove);
-
-		    var boardValue = -evaluateBoard(game.board())
-		    game.undo();
-		    if (boardValue > bestValue) {
-		        bestValue = boardValue;
-		        bestMove = possibleMove
-		    }
-		}
-
-		return bestMove;
+	    for(var i = 0; i < newGameMoves.length; i++) {
+	        var newGameMove = newGameMoves[i]
+	        game.move(newGameMove);
+	        var value = minimax(1, false);
+	        game.undo();
+	        if(value >= bestMove) {
+	            bestMove = value;
+	            bestMoveFound = newGameMove;
+	        }
+	    }
+	    return bestMoveFound;
 	};
 
 
-	// 
+	var minimax = function (depth, isMaximisingPlayer) {
+	    if (depth === 0) {
+	        return -evaluateBoard(game.board());
+	    }
+
+	    var newGameMoves = game.moves();
+
+	    if (isMaximisingPlayer) {
+	        var bestMove = -9999;
+	        for (var i = 0; i < newGameMoves.length; i++) {
+	            game.move(newGameMoves[i]);
+	            bestMove = Math.max(bestMove, minimax(depth - 1, !isMaximisingPlayer));
+	            game.undo();
+	        }
+	        return bestMove;
+
+	    } else {
+	        var bestMove = 9999;
+	        for (var i = 0; i < newGameMoves.length; i++) {
+	            game.move(newGameMoves[i]);
+	            bestMove = Math.min(bestMove, minimax(depth - 1, !isMaximisingPlayer));
+	            game.undo();
+	        }
+	        return bestMove;
+	    }
+	};
+
+
+	// the evaluation function for minimax
 	var evaluateBoard = function (board) {
 	    var totalEvaluation = 0;
 	    for (var i = 0; i < 8; i++) {
@@ -96,7 +119,7 @@ $(document).ready(function(){
 
 
 	var makeAImove = function () {
-	    var bestMove = calculateBestMove(game);
+	    var bestMove = calculateBestMove();
 	    game.move(bestMove);
 	    board.position(game.fen());
 	};
@@ -115,7 +138,7 @@ $(document).ready(function(){
 	  // illegal move
 	  if (move === null) return 'snapback';
 
-	  // make random legal move for black
+	  // make legal move for black AI player
 	  window.setTimeout(makeAImove, 250);
 	};
 
