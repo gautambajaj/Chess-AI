@@ -30,6 +30,10 @@
   },
   "scripts": {
     "test": "mocha",
-    "minify": "uglifyjs chess.js -c -m --comments 'license' > chess.min.js"
+    "minify": "uglifyjs chess.js -c -m --comments 'license' > chess.min.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.13.3"
   }
 }
