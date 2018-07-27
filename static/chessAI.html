@@ -7,11 +7,23 @@
 	<script type="text/javascript" src='/js/lib/chess.js'> </script>
 	<script type="text/javascript" src="/js/chessAI.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/chessboard-0.3.0.css">></style>
+	<link rel="stylesheet" type="text/css" href="/css/chessboard-0.3.0.css"></style>
+	<link rel="stylesheet" type="text/css" href="/css/chessAI.css"></style>
 </head>
 
 <body>
-	<div id="board" style="width: 400px" ></div>
+	<div class="menu" id="difficulty"> 
+		<br>
+		<h1>Select Difficulty:</h1>
+		<hr><br>
+		<button type="button" class="btn easy btn-success btn-xlarge">Easy</button>
+		<br><br>
+		<button type="button" class="btn medium btn-warning btn-xlarge">Medium</button>
+		<br><br>
+		<button type="button" class="btn hard btn-danger btn-xlarge">Hard</button>
+	</div>
+
+	<div id="board" style="width: 600px" ></div>
 	<hr>
 	<div id="gameover" class="alert alert-primary hide" role="alert"><strong></strong></div>
 </body>

@@ -1,5 +1,26 @@
 $(document).ready(function(){
+	$('#board').hide()
 	$('#gameover').hide()
+
+	var minimaxDepth = 2;
+	$('.easy').click(function(){
+		setDepth(0);
+	});
+	$('.medium').click(function(){
+		setDepth(1);
+	});
+	$('.hard').click(function(){
+		setDepth(2);
+	});
+
+
+	function setDepth(depth){
+		minimaxDepth = depth;
+		$('#difficulty').hide();
+		$('#board').show();
+	}
+
+
 	var board,
 	  game = new Chess();
 
@@ -42,7 +63,7 @@ $(document).ready(function(){
 	    for(var i = 0; i < possibleNextMoves.length; i++) {
 	        var possibleNextMove = possibleNextMoves[i]
 	        game.move(possibleNextMove);
-	        var value = minimax(2, -10000, 10000, false);
+	        var value = minimax(minimaxDepth, -10000, 10000, false);
 	        game.undo();
 	        if(value >= bestMove) {
 	            bestMove = value;
