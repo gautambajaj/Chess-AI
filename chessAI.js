@@ -42,11 +42,11 @@ $(document).ready(function(){
 	    for(var i = 0; i < possibleNextMoves.length; i++) {
 	        var possibleNextMove = possibleNextMoves[i]
 	        game.move(possibleNextMove);
-	        var value = minimax(3, -10000, 10000, false);
+	        var value = minimax(2, -10000, 10000, false);
 	        game.undo();
 	        if(value >= bestMove) {
 	            bestMove = value;
-	            bestMoveFound = newGameMove;
+	            bestMoveFound = possibleNextMove;
 	        }
 	    }
 	    return bestMoveFound;
@@ -81,8 +81,9 @@ $(document).ready(function(){
 	            bestMove = Math.min(bestMove, minimax(depth - 1, alpha, beta, !isMaximisingPlayer));
 	            game.undo();
 	            beta = Math.min(beta, bestMove);
-	            if(beta <= alpha)_
+	            if(beta <= alpha){
 	            	return bestMove;
+	            }
 	        }
 	    }
 
