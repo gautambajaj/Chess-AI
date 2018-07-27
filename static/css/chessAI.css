@@ -15,3 +15,8 @@
     -moz-border-radius: 8px;
     border-radius: 8px;
 }
+
+.restartGame {
+	position: absolute;
+	margin-left: 230px;
+}
