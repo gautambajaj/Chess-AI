@@ -1,24 +1,39 @@
 $(document).ready(function(){
-	$('#board').hide()
-	$('#gameover').hide()
-
 	var minimaxDepth = 2;
-	$('.easy').click(function(){
-		setDepth(0);
-	});
-	$('.medium').click(function(){
-		setDepth(1);
-	});
-	$('.hard').click(function(){
-		setDepth(2);
-	});
+	initGame();
 
+	function initGame(){
+		$('#board').hide();
+		$('#gameover').hide();
+		$('#restart').hide();
+		$('#difficulty').show();
 
-	function setDepth(depth){
-		minimaxDepth = depth;
-		$('#difficulty').hide();
-		$('#board').show();
+		$('.easy').click(function(){
+			setDepth(0);
+		});
+		$('.medium').click(function(){
+			setDepth(1);
+		});
+		$('.hard').click(function(){
+			setDepth(2);
+		});
+
+		function setDepth(depth){
+			$('#difficulty').hide();
+			$('#board').show();
+			$('#restart').show();
+			console.log(depth);
+			minimaxDepth = depth;
+		}
 	}
+
+
+	$('.restartGame').click(function(){
+		board.clear();
+		board.start();
+		game.reset();
+		initGame();
+	})
 
 
 	var board,
